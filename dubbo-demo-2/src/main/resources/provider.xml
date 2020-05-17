@@ -16,9 +16,9 @@
     <dubbo:protocol name="dubbo" port="20880"/>
 
     <!-- service implementation, as same as regular local bean -->
-    <bean id="demoService" class="org.zk.dubbo.DemoServiceImpl"/>
+    <bean id="demoService" class="org.zk.dubbo.provider.DemoServiceImpl"/>
 
     <!-- declare the service interface to be exported -->
-    <dubbo:service interface="org.zk.dubbo.DemoService" ref="demoService"/>
+    <dubbo:service interface="org.zk.dubbo.api.DemoService" ref="demoService"/>
 
 </beans>

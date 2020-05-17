@@ -1,4 +1,4 @@
-package org.zk.dubbo;
+package org.zk.dubbo.api;
 
 public interface DemoService {
 	String sayHi(String message);

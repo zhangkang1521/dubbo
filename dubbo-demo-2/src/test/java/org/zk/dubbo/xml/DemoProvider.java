@@ -1,4 +1,4 @@
-package org.zk.dubbo;
+package org.zk.dubbo.xml;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

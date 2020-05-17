@@ -1,7 +1,7 @@
-package org.zk.dubbo;
+package org.zk.dubbo.xml;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.zk.dubbo.api.DemoService;
 
 public class DemoConsumer {
 
