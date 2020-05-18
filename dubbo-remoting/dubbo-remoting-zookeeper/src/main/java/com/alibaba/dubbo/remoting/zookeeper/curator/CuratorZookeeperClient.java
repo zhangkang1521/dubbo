@@ -83,6 +83,7 @@ public class CuratorZookeeperClient extends AbstractZookeeperClient<CuratorWatch
     @Override
     public void createEphemeral(String path) {
         try {
+            // 临时节点，连接断开自动删除
             client.create().withMode(CreateMode.EPHEMERAL).forPath(path);
         } catch (NodeExistsException e) {
         } catch (Exception e) {

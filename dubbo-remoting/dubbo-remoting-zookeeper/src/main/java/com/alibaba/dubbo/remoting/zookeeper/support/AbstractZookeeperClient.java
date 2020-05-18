@@ -59,6 +59,7 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
         }
         int i = path.lastIndexOf('/');
         if (i > 0) {
+            // 递归将上级目录创建，上级目录为永久节点
             create(path.substring(0, i), false);
         }
         if (ephemeral) {

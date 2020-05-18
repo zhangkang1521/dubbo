@@ -66,6 +66,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     public FailbackRegistry(URL url) {
         super(url);
         this.retryPeriod = url.getParameter(Constants.REGISTRY_RETRY_PERIOD_KEY, Constants.DEFAULT_REGISTRY_RETRY_PERIOD);
+        // 默认5s重试
         this.retryFuture = retryExecutor.scheduleWithFixedDelay(new Runnable() {
             @Override
             public void run() {
@@ -130,10 +131,12 @@ public abstract class FailbackRegistry extends AbstractRegistry {
     @Override
     public void register(URL url) {
         super.register(url);
+        // 增加重试机制
         failedRegistered.remove(url);
         failedUnregistered.remove(url);
         try {
             // Sending a registration request to the server side
+            // 交由子类实现，模板方法
             doRegister(url);
         } catch (Exception e) {
             Throwable t = e;
@@ -153,6 +156,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
             }
 
             // Record a failed registration request to a failed list, retry regularly
+            // 增加重试机制
             failedRegistered.add(url);
         }
     }
