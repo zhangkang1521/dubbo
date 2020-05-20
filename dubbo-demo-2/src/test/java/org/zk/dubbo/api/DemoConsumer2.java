@@ -10,7 +10,8 @@ public class DemoConsumer2 {
 	public static void main(String[] args) {
 		ReferenceConfig<DemoService> reference = new ReferenceConfig<DemoService>();
 		reference.setApplication(new ApplicationConfig("demo-consumer"));
-		reference.setRegistry(new RegistryConfig("zookeeper://localhost:2181"));
+//		reference.setRegistry(new RegistryConfig("zookeeper://localhost:2181"));
+		reference.setRegistry(new RegistryConfig("redis://localhost:6379"));
 		reference.setInterface(DemoService.class);
 		DemoService demoService = reference.get();
 		String str = demoService.sayHi("zhangxuan");

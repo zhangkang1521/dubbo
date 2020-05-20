@@ -43,6 +43,6 @@ public interface RegistryFactory {
      * @return Registry reference, never return empty value
      */
     @Adaptive({"protocol"})
-    Registry getRegistry(URL url);
+    Registry getRegistry(URL url); // 获取注册中心，Zookeeper,Redis等
 
 }

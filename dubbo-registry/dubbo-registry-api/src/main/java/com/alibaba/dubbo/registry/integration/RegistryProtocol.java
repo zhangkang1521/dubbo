@@ -103,7 +103,7 @@ public class RegistryProtocol implements Protocol {
     public void setProtocol(Protocol protocol) {
         this.protocol = protocol;
     }
-
+    // 自动依赖注入
     public void setRegistryFactory(RegistryFactory registryFactory) {
         this.registryFactory = registryFactory;
     }
@@ -122,6 +122,7 @@ public class RegistryProtocol implements Protocol {
     }
 
     public void register(URL registryUrl, URL registedProviderUrl) {
+        // url参数中的protocol
         Registry registry = registryFactory.getRegistry(registryUrl);
         registry.register(registedProviderUrl);
     }

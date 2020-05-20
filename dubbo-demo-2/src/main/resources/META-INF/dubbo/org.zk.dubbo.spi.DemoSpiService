@@ -1,0 +1,2 @@
+first=org.zk.dubbo.spi.FirstDemoSpiServiceImpl
+second=org.zk.dubbo.spi.SecondDemoSpiServiceImpl
