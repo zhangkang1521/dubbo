@@ -6,19 +6,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
        http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
 
-    <!-- provider's application name, used for tracing dependency relationship -->
+    <!-- dubbo标签解析类 DubboNamespaceHandler -->
+
+    <!-- 应用信息 ApplicationConfig -->
     <dubbo:application name="demo-provider"/>
 
-    <!-- 使用zookeeper做注册中心 -->
+    <!-- 注册中心 RegistryConfig -->
     <dubbo:registry address="zookeeper://localhost:2181"/>
 
-    <!-- use dubbo protocol to export service on port 20880 -->
+    <!-- 服务提供者默认配置，会透传到消费端 -->
+    <dubbo:provider timeout="3000" retries="0"/>
+
+    <!-- 协议 ProtocolConfig -->
     <dubbo:protocol name="dubbo" port="20880"/>
 
     <!-- service implementation, as same as regular local bean -->
     <bean id="demoService" class="org.zk.dubbo.provider.DemoServiceImpl"/>
 
-    <!-- declare the service interface to be exported -->
+    <!-- 服务暴露 ServiceBean -->
     <dubbo:service interface="org.zk.dubbo.api.DemoService" ref="demoService"/>
 
 </beans>
