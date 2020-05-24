@@ -41,8 +41,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@EnableDubboConfig
-@DubboComponentScan
+@EnableDubboConfig // 从配置文件读取配置
+@DubboComponentScan // @Service暴露，@Reference注入
 public @interface EnableDubbo {
 
     /**

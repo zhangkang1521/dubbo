@@ -56,7 +56,7 @@ public class DubboConfigConfiguration {
             @EnableDubboConfigBinding(prefix = "dubbo.provider", type = ProviderConfig.class),
             @EnableDubboConfigBinding(prefix = "dubbo.consumer", type = ConsumerConfig.class)
     })
-    public static class Single {
+    public static class Single { // 按配置文件自动注入配置bean
 
     }
 

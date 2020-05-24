@@ -104,6 +104,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AnnotationInjectedBean
         return Collections.unmodifiableMap(injectedMethodReferenceBeanCache);
     }
 
+    // AnnotatedFieldElement.inject 中调用
     @Override
     protected Object doGetInjectedBean(Reference reference, Object bean, String beanName, Class<?> injectedType,
                                        InjectionMetadata.InjectedElement injectedElement) throws Exception {
@@ -114,6 +115,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AnnotationInjectedBean
 
         cacheInjectedReferenceBean(referenceBean, injectedElement);
 
+        // 创建代理
         Object proxy = buildProxy(referencedBeanName, referenceBean, injectedType);
 
         return proxy;

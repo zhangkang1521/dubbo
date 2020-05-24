@@ -34,6 +34,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 根据配置文件自动注入配置bean
  * As  a convenient and multiple {@link EnableDubboConfigBinding}
  * in default behavior , is equal to single bean bindings with below convention prefixes of properties:
  * <ul>
