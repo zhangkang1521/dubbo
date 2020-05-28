@@ -35,7 +35,14 @@ public class DubboSpiTest {
 		ExtensionLoader<DemoSpiService> extensionLoader = ExtensionLoader.getExtensionLoader(DemoSpiService.class);
 		Map<String, String> parameters = new HashMap<String, String>();
 		parameters.put("second_value", "xx");
+		parameters.put("key", "first"); // 在加入指定的扩展
 		URL url = new URL("xxx", "localhost", 8000, parameters);
-		List<DemoSpiService> demoSpiService = extensionLoader.getActivateExtension(url, new String[]{}, "group_2");
+		// (满足分组 && 含有Activate.value) || key中指定的扩展
+		List<DemoSpiService> demoSpiService = extensionLoader.getActivateExtension(url, "key", "group_2");
+	}
+
+	@Test
+	public void testWrapper() {
+
 	}
 }

@@ -61,6 +61,7 @@ public abstract class AbstractProxyFactory implements ProxyFactory {
             interfaces[len] = GenericService.class;
         }
 
+        // javaassist, jdk
         return getProxy(invoker, interfaces);
     }
 

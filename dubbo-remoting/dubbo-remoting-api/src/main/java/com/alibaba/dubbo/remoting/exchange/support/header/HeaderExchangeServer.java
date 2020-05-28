@@ -51,7 +51,7 @@ public class HeaderExchangeServer implements ExchangeServer {
             new NamedThreadFactory(
                     "dubbo-remoting-server-heartbeat",
                     true));
-    private final Server server;
+    private final Server server; // NettyServer
     // heartbeat timer
     private ScheduledFuture<?> heartbeatTimer;
     // heartbeat timeout (ms), default value is 0 , won't execute a heartbeat.

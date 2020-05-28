@@ -199,13 +199,14 @@ public class ExtensionLoader<T> {
                     T ext = getExtension(name);
                     if (!names.contains(name)
                             && !names.contains(Constants.REMOVE_VALUE_PREFIX + name)
-                            && isActive(activate, url)) {
+                            && isActive(activate, url)) { // 含有参数，参数值不做校验
                         exts.add(ext); //
                     }
                 }
             }
             Collections.sort(exts, ActivateComparator.COMPARATOR);
         }
+        // 加入values中指定的扩展
         List<T> usrs = new ArrayList<T>();
         for (int i = 0; i < names.size(); i++) {
             String name = names.get(i);
@@ -506,6 +507,7 @@ public class ExtensionLoader<T> {
             }
             // 依赖注入
             injectExtension(instance);
+            // 自动包装
             Set<Class<?>> wrapperClasses = cachedWrapperClasses;
             if (wrapperClasses != null && !wrapperClasses.isEmpty()) {
                 for (Class<?> wrapperClass : wrapperClasses) {
@@ -757,6 +759,7 @@ public class ExtensionLoader<T> {
     private Class<?> createAdaptiveExtensionClass() {
         // 创建代理类代码
         String code = createAdaptiveExtensionClassCode();
+        logger.info("自动生成" + type.getSimpleName() + "$Adaptive" + "代码：" + code);
         ClassLoader classLoader = findClassLoader();
         // 编译代码
         com.alibaba.dubbo.common.compiler.Compiler compiler = ExtensionLoader.getExtensionLoader(com.alibaba.dubbo.common.compiler.Compiler.class).getAdaptiveExtension();
@@ -815,6 +818,7 @@ public class ExtensionLoader<T> {
                     String attribMethod = null;
 
                     // find URL getter method
+                    // 也支持类中含有getURL这个方法比如Invoker类
                     LBL_PTS:
                     for (int i = 0; i < pts.length; ++i) {
                         Method[] ms = pts[i].getMethods();

@@ -13,6 +13,7 @@
 
     <!-- 注册中心 RegistryConfig -->
     <dubbo:registry address="zookeeper://localhost:2181"/>
+    <!--<dubbo:registry address="N/A"/>-->
 
     <!-- 服务提供者默认配置，会透传到消费端 -->
     <dubbo:provider timeout="3000" retries="0"/>
@@ -24,6 +25,6 @@
     <bean id="demoService" class="org.zk.dubbo.provider.DemoServiceImpl"/>
 
     <!-- 服务暴露 ServiceBean -->
-    <dubbo:service interface="org.zk.dubbo.api.DemoService" ref="demoService"/>
+    <dubbo:service interface="org.zk.dubbo.api.DemoService" ref="demoService" proxy="jdk" scope="remote"/>
 
 </beans>

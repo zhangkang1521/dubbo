@@ -89,9 +89,10 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         if (applicationContext != null) {
             SPRING_CONTEXT = applicationContext;
             try {
+
                 Method method = applicationContext.getClass().getMethod("addApplicationListener", new Class<?>[]{ApplicationListener.class}); // backward compatibility to spring 2.0.1
                 method.invoke(applicationContext, new Object[]{this});
-                supportedApplicationListener = true;
+                supportedApplicationListener = true; // 支持事件机制
             } catch (Throwable t) {
                 if (applicationContext instanceof AbstractApplicationContext) {
                     try {
@@ -134,6 +135,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         }
     }
 
+    // 返回值与语义相反，已重构
     private boolean isDelay() {
         Integer delay = getDelay();
         ProviderConfig provider = getProvider();
