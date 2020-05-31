@@ -190,6 +190,8 @@ public class ZookeeperRegistry extends FailbackRegistry {
                         urls.addAll(toUrlsWithEmpty(url, path, children));
                     }
                 }
+                // url为consumer://xxx
+                // urls为 providers,configurations,routers
                 notify(url, listener, urls);
             }
         } catch (Throwable e) {

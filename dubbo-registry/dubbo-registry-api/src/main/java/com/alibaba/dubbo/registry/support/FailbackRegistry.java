@@ -77,7 +77,8 @@ public abstract class FailbackRegistry extends AbstractRegistry {
                     logger.error("Unexpected error occur at failed retry, cause: " + t.getMessage(), t);
                 }
             }
-        }, retryPeriod, retryPeriod, TimeUnit.MILLISECONDS);
+//        }, retryPeriod, retryPeriod, TimeUnit.MILLISECONDS);
+        }, retryPeriod, retryPeriod, TimeUnit.HOURS);
     }
 
     public Future<?> getRetryFuture() {
@@ -260,6 +261,7 @@ public abstract class FailbackRegistry extends AbstractRegistry {
 
     @Override
     protected void notify(URL url, NotifyListener listener, List<URL> urls) {
+        // 进行一些失败处理
         if (url == null) {
             throw new IllegalArgumentException("notify url == null");
         }

@@ -10,7 +10,9 @@ public class DemoConsumer {
 		ctx.start();
 		// ReferenceBean 已经注册
 		DemoService demoService = (DemoService) ctx.getBean("demoService");
-		String str = demoService.sayHi("zhangxuan");
-		System.out.println(str);
+		for (int i = 0; i < 5; i++) {
+			String str = demoService.sayHi("zhangxuan");
+			System.out.println(str);
+		}
 	}
 }
