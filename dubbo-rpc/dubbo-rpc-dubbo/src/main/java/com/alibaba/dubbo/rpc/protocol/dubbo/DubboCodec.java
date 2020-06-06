@@ -43,6 +43,7 @@ import static com.alibaba.dubbo.rpc.protocol.dubbo.CallbackServiceCodec.encodeIn
 
 /**
  * Dubbo codec.
+ * dubbo协议编码解码器
  */
 public class DubboCodec extends ExchangeCodec implements Codec2 {
 
@@ -171,18 +172,18 @@ public class DubboCodec extends ExchangeCodec implements Codec2 {
     protected void encodeRequestData(Channel channel, ObjectOutput out, Object data, String version) throws IOException {
         RpcInvocation inv = (RpcInvocation) data;
 
-        out.writeUTF(version);
-        out.writeUTF(inv.getAttachment(Constants.PATH_KEY));
-        out.writeUTF(inv.getAttachment(Constants.VERSION_KEY));
+        out.writeUTF(version);  // 版本号
+        out.writeUTF(inv.getAttachment(Constants.PATH_KEY)); // 服务接口名
+        out.writeUTF(inv.getAttachment(Constants.VERSION_KEY)); // 版本
 
-        out.writeUTF(inv.getMethodName());
-        out.writeUTF(ReflectUtils.getDesc(inv.getParameterTypes()));
+        out.writeUTF(inv.getMethodName()); // 方法名
+        out.writeUTF(ReflectUtils.getDesc(inv.getParameterTypes())); // 参数类型
         Object[] args = inv.getArguments();
         if (args != null)
             for (int i = 0; i < args.length; i++) {
-                out.writeObject(encodeInvocationArgument(channel, inv, i));
+                out.writeObject(encodeInvocationArgument(channel, inv, i)); // 参数值
             }
-        out.writeObject(inv.getAttachments());
+        out.writeObject(inv.getAttachments()); // 隐式参数
     }
 
     @Override

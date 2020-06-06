@@ -216,22 +216,27 @@ public class ExchangeCodec extends TelnetCodec {
         Bytes.short2bytes(MAGIC, header);
 
         // set request and serialization flag.
+        // 标志是请求；标志序列化id，默认2 代表Hession2
         header[2] = (byte) (FLAG_REQUEST | serialization.getContentTypeId());
 
+        // 0：单向调用 1：双向调用
         if (req.isTwoWay()) header[2] |= FLAG_TWOWAY;
+        // 0：请求或相应包 1：心跳包
         if (req.isEvent()) header[2] |= FLAG_EVENT;
 
-        // set request id.
+        // set request id. 请求id，用于请求相应关联
         Bytes.long2bytes(req.getId(), header, 4);
 
         // encode request data.
         int savedWriteIndex = buffer.writerIndex();
-        buffer.writerIndex(savedWriteIndex + HEADER_LENGTH);
+        buffer.writerIndex(savedWriteIndex + HEADER_LENGTH); // 跳过消息头，用于序列化消息体
         ChannelBufferOutputStream bos = new ChannelBufferOutputStream(buffer);
         ObjectOutput out = serialization.serialize(channel.getUrl(), bos);
         if (req.isEvent()) {
             encodeEventData(channel, out, req.getData());
         } else {
+            // 写入消息体，data为RpcInvocation
+            // Dubbo协议重写该方法
             encodeRequestData(channel, out, req.getData(), req.getVersion());
         }
         out.flushBuffer();
@@ -242,11 +247,11 @@ public class ExchangeCodec extends TelnetCodec {
         bos.close();
         int len = bos.writtenBytes();
         checkPayload(channel, len);
-        Bytes.int2bytes(len, header, 12);
+        Bytes.int2bytes(len, header, 12); // 写入消息体长度
 
         // write
-        buffer.writerIndex(savedWriteIndex);
-        buffer.writeBytes(header); // write header.
+        buffer.writerIndex(savedWriteIndex); //
+        buffer.writeBytes(header); // write header. 写入头部
         buffer.writerIndex(savedWriteIndex + HEADER_LENGTH + len);
     }
 
@@ -259,13 +264,13 @@ public class ExchangeCodec extends TelnetCodec {
             // set magic number.
             Bytes.short2bytes(MAGIC, header);
             // set request and serialization flag.
-            header[2] = serialization.getContentTypeId();
-            if (res.isHeartbeat()) header[2] |= FLAG_EVENT;
+            header[2] = serialization.getContentTypeId(); // 2: Hession2
+            if (res.isHeartbeat()) header[2] |= FLAG_EVENT; // 是否心跳
             // set response status.
-            byte status = res.getStatus();
+            byte status = res.getStatus(); // 状态 20=返回正确
             header[3] = status;
             // set request id.
-            Bytes.long2bytes(res.getId(), header, 4);
+            Bytes.long2bytes(res.getId(), header, 4); // 请求id
 
             buffer.writerIndex(savedWriteIndex + HEADER_LENGTH);
             ChannelBufferOutputStream bos = new ChannelBufferOutputStream(buffer);
@@ -275,6 +280,7 @@ public class ExchangeCodec extends TelnetCodec {
                 if (res.isHeartbeat()) {
                     encodeHeartbeatData(channel, out, res.getResult());
                 } else {
+                    // 写入消息体
                     encodeResponseData(channel, out, res.getResult(), res.getVersion());
                 }
             } else out.writeUTF(res.getErrorMessage());
