@@ -87,20 +87,22 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
 
     @Override
     public Object decode(Channel channel, InputStream input) throws IOException {
+        // Hession2反序化
         ObjectInput in = CodecSupport.getSerialization(channel.getUrl(), serializationType)
                 .deserialize(channel.getUrl(), input);
 
-        String dubboVersion = in.readUTF();
+        String dubboVersion = in.readUTF(); // dubbo版本
         request.setVersion(dubboVersion);
         setAttachment(Constants.DUBBO_VERSION_KEY, dubboVersion);
 
-        setAttachment(Constants.PATH_KEY, in.readUTF());
-        setAttachment(Constants.VERSION_KEY, in.readUTF());
+        setAttachment(Constants.PATH_KEY, in.readUTF()); // 服务名
+        setAttachment(Constants.VERSION_KEY, in.readUTF()); // 服务版本，默认0.0.0
 
-        setMethodName(in.readUTF());
+        setMethodName(in.readUTF()); // 方法名
         try {
             Object[] args;
             Class<?>[] pts;
+            // 参数类型
             String desc = in.readUTF();
             if (desc.length() == 0) {
                 pts = DubboCodec.EMPTY_CLASS_ARRAY;
@@ -110,6 +112,7 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
                 args = new Object[pts.length];
                 for (int i = 0; i < args.length; i++) {
                     try {
+                        // 参数值
                         args[i] = in.readObject(pts[i]);
                     } catch (Exception e) {
                         if (log.isWarnEnabled()) {
@@ -120,6 +123,7 @@ public class DecodeableRpcInvocation extends RpcInvocation implements Codec, Dec
             }
             setParameterTypes(pts);
 
+            // 额外参数
             Map<String, String> map = (Map<String, String>) in.readObject(Map.class);
             if (map != null && map.size() > 0) {
                 Map<String, String> attachment = getAttachments();

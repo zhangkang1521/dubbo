@@ -107,7 +107,9 @@ public class DecodeableRpcResult extends RpcResult implements Codec, Decodeable 
                 break;
             case DubboCodec.RESPONSE_VALUE_WITH_ATTACHMENTS:
                 try {
+                    // 返回值类型
                     Type[] returnType = RpcUtils.getReturnTypes(invocation);
+                    // 读取返回值
                     setValue(returnType == null || returnType.length == 0 ? in.readObject() :
                             (returnType.length == 1 ? in.readObject((Class<?>) returnType[0])
                                     : in.readObject((Class<?>) returnType[0], returnType[1])));

@@ -69,6 +69,7 @@ public class RpcUtils {
                     if (method.getReturnType() == void.class) {
                         return null;
                     }
+                    // 返回值的Class,Type
                     return new Type[]{method.getReturnType(), method.getGenericReturnType()};
                 }
             }
