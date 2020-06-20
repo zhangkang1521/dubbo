@@ -36,6 +36,7 @@ import com.alibaba.dubbo.remoting.transport.ChannelHandlerDelegate;
 import java.net.InetSocketAddress;
 
 /**
+ * 封装处理Request/Response 和Telnet的能力
  * ExchangeReceiver
  */
 public class HeaderExchangeHandler implements ChannelHandlerDelegate {
@@ -183,6 +184,7 @@ public class HeaderExchangeHandler implements ChannelHandlerDelegate {
                     Exception e = new Exception("Dubbo client can not supported string message: " + message + " in channel: " + channel + ", url: " + channel.getUrl());
                     logger.error(e.getMessage(), e);
                 } else {
+                    // TelnetHandlerAdapter
                     String echo = handler.telnet(channel, (String) message);
                     if (echo != null && echo.length() > 0) {
                         channel.send(echo);

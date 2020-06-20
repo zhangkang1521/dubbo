@@ -22,10 +22,12 @@
     <dubbo:protocol name="dubbo" port="20881"/>
 
     <!-- service implementation, as same as regular local bean -->
-    <bean id="demoService" class="org.zk.dubbo.provider.DemoServiceImpl"/>
+    <!--<bean id="demoService" class="org.zk.dubbo.provider.DemoServiceImpl"/>-->
 
     <!-- 服务暴露 ServiceBean -->
-    <dubbo:service interface="org.zk.dubbo.api.DemoService" ref="demoService" proxy="jdk" scope="remote">
+    <dubbo:service interface="org.zk.dubbo.api.DemoService" class="org.zk.dubbo.provider.DemoServiceImpl" proxy="jdk" scope="remote">
     </dubbo:service>
+
+    <dubbo:service interface="org.zk.dubbo.api.Demo2Service" class="org.zk.dubbo.provider.Demo2ServiceImpl"/>
 
 </beans>

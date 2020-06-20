@@ -54,6 +54,7 @@ public class WrappedChannelHandler implements ChannelHandlerDelegate {
             componentKey = Constants.CONSUMER_SIDE;
         }
         DataStore dataStore = ExtensionLoader.getExtensionLoader(DataStore.class).getDefaultExtension();
+        // 两层HashMap存储
         dataStore.put(componentKey, Integer.toString(url.getPort()), executor);
     }
 

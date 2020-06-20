@@ -78,6 +78,7 @@ public class InvokeTelnetHandler implements TelnetHandler {
                     return false;
                 }
             } else if (arg instanceof Map) {
+                // 参数中加一个属性class，例如{ "class": "org.zk.User", "id": 100}
                 String name = (String) ((Map<?, ?>) arg).get("class");
                 Class<?> cls = arg.getClass();
                 if (name != null && name.length() > 0) {
@@ -102,6 +103,7 @@ public class InvokeTelnetHandler implements TelnetHandler {
     @Override
     @SuppressWarnings("unchecked")
     public String telnet(Channel channel, String message) {
+        // 执行invoke命令
         if (message == null || message.length() == 0) {
             return "Please input method name, eg: \r\ninvoke xxxMethod(1234, \"abcd\", {\"prop\" : \"value\"})\r\ninvoke XxxService.xxxMethod(1234, \"abcd\", {\"prop\" : \"value\"})\r\ninvoke com.xxx.XxxService.xxxMethod(1234, \"abcd\", {\"prop\" : \"value\"})";
         }
@@ -114,8 +116,8 @@ public class InvokeTelnetHandler implements TelnetHandler {
         if (i < 0 || !message.endsWith(")")) {
             return "Invalid parameters, format: service.method(args)";
         }
-        String method = message.substring(0, i).trim();
-        String args = message.substring(i + 1, message.length() - 1).trim();
+        String method = message.substring(0, i).trim(); // 方法名
+        String args = message.substring(i + 1, message.length() - 1).trim(); // 参数
         i = method.lastIndexOf(".");
         if (i >= 0) {
             service = method.substring(0, i).trim();
@@ -123,12 +125,13 @@ public class InvokeTelnetHandler implements TelnetHandler {
         }
         List<Object> list;
         try {
-            list = JSON.parseArray("[" + args + "]", Object.class);
+            list = JSON.parseArray("[" + args + "]", Object.class); // 参数字符串转换成对象
         } catch (Throwable t) {
             return "Invalid json argument, cause: " + t.getMessage();
         }
         Invoker<?> invoker = null;
         Method invokeMethod = null;
+        // 找到暴露的Exporter
         for (Exporter<?> exporter : DubboProtocol.getDubboProtocol().getExporters()) {
             if (service == null || service.length() == 0) {
                 invokeMethod = findMethod(exporter, method, list);
@@ -149,9 +152,11 @@ public class InvokeTelnetHandler implements TelnetHandler {
         if (invoker != null) {
             if (invokeMethod != null) {
                 try {
+                    // 转换成方法对应的对象
                     Object[] array = PojoUtils.realize(list.toArray(), invokeMethod.getParameterTypes(), invokeMethod.getGenericParameterTypes());
                     RpcContext.getContext().setLocalAddress(channel.getLocalAddress()).setRemoteAddress(channel.getRemoteAddress());
                     long start = System.currentTimeMillis();
+                    // 执行方法
                     Object result = invoker.invoke(new RpcInvocation(invokeMethod, array)).recreate();
                     long end = System.currentTimeMillis();
                     buf.append(JSON.toJSONString(result));
