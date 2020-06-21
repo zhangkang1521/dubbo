@@ -56,7 +56,8 @@ final class HeartBeatTask implements Runnable {
                     Long lastWrite = (Long) channel.getAttribute(
                             HeaderExchangeHandler.KEY_WRITE_TIMESTAMP);
                     if ((lastRead != null && now - lastRead > heartbeat)
-                            || (lastWrite != null && now - lastWrite > heartbeat)) {
+                            || (lastWrite != null && now - lastWrite > heartbeat)) { // 默认1分钟
+                        // 发送心跳报文
                         Request req = new Request();
                         req.setVersion(Version.getProtocolVersion());
                         req.setTwoWay(true);
@@ -67,17 +68,17 @@ final class HeartBeatTask implements Runnable {
                                     + ", cause: The channel has no data-transmission exceeds a heartbeat period: " + heartbeat + "ms");
                         }
                     }
-                    if (lastRead != null && now - lastRead > heartbeatTimeout) {
+                    if (lastRead != null && now - lastRead > heartbeatTimeout) { // 默认3分钟
                         logger.warn("Close channel " + channel
                                 + ", because heartbeat read idle time out: " + heartbeatTimeout + "ms");
                         if (channel instanceof Client) {
                             try {
-                                ((Client) channel).reconnect();
+                                ((Client) channel).reconnect(); // 客户端重连服务端
                             } catch (Exception e) {
                                 //do nothing
                             }
                         } else {
-                            channel.close();
+                            channel.close(); // 服务端关闭与客户端的连接
                         }
                     }
                 } catch (Throwable t) {

@@ -18,16 +18,25 @@
     <!-- 服务提供者默认配置，会透传到消费端 -->
     <dubbo:provider timeout="300000" retries="0"/>
 
-    <!-- 协议 ProtocolConfig -->
+    <!-- dubbo协议 -->
     <dubbo:protocol name="dubbo" port="20881"/>
+
+    <!-- rest协议 -->
+    <!--<dubbo:protocol name="rest" port="20881"/>-->
 
     <!-- service implementation, as same as regular local bean -->
     <!--<bean id="demoService" class="org.zk.dubbo.provider.DemoServiceImpl"/>-->
 
+
+
     <!-- 服务暴露 ServiceBean -->
     <dubbo:service interface="org.zk.dubbo.api.DemoService" class="org.zk.dubbo.provider.DemoServiceImpl" proxy="jdk" scope="remote">
+        <dubbo:parameter key="heartbeat" value="1000"/>
     </dubbo:service>
 
-    <dubbo:service interface="org.zk.dubbo.api.Demo2Service" class="org.zk.dubbo.provider.Demo2ServiceImpl"/>
+    <dubbo:service interface="org.zk.dubbo.api.Demo2Service" class="org.zk.dubbo.provider.Demo2ServiceImpl">
 
+    </dubbo:service>
+
+    <!--<dubbo:service interface="org.zk.dubbo.api.UserService" class="org.zk.dubbo.provider.UserServiceImpl"/>-->
 </beans>

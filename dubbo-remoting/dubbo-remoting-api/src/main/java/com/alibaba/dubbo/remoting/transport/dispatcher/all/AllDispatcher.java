@@ -29,6 +29,7 @@ public class AllDispatcher implements Dispatcher {
 
     @Override
     public ChannelHandler dispatch(ChannelHandler handler, URL url) {
+        // 所有I/O事件交给dubbo线程池处理，默认
         return new AllChannelHandler(handler, url);
     }
 

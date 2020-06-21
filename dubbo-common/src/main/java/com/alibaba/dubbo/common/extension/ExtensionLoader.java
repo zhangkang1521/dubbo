@@ -759,7 +759,7 @@ public class ExtensionLoader<T> {
     private Class<?> createAdaptiveExtensionClass() {
         // 创建代理类代码
         String code = createAdaptiveExtensionClassCode();
-        logger.info("自动生成" + type.getSimpleName() + "$Adaptive" + "代码：" + code);
+        // logger.info("自动生成" + type.getSimpleName() + "$Adaptive" + "代码：" + code);
         ClassLoader classLoader = findClassLoader();
         // 编译代码
         com.alibaba.dubbo.common.compiler.Compiler compiler = ExtensionLoader.getExtensionLoader(com.alibaba.dubbo.common.compiler.Compiler.class).getAdaptiveExtension();

@@ -92,6 +92,7 @@ public class DubboInvoker<T> extends AbstractInvoker<T> {
                 return new RpcResult();
             } else {
                 RpcContext.getContext().setFuture(null);
+                // 发送请求，并拿结果，超时则返回超时结果
                 return (Result) currentClient.request(inv, timeout).get();
             }
         } catch (TimeoutException e) {

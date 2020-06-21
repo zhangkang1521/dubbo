@@ -145,6 +145,7 @@ public class DefaultFuture implements ResponseFuture {
             lock.lock();
             try {
                 while (!isDone()) {
+                    // 等待返回结果
                     done.await(timeout, TimeUnit.MILLISECONDS);
                     if (isDone() || System.currentTimeMillis() - start > timeout) {
                         break;
@@ -278,7 +279,7 @@ public class DefaultFuture implements ResponseFuture {
         try {
             response = res;
             if (done != null) {
-                done.signal();
+                done.signal(); // 唤醒线程
             }
         } finally {
             lock.unlock();

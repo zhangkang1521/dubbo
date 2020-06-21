@@ -94,6 +94,7 @@ public class HeaderExchangeHandler implements ChannelHandlerDelegate {
         Object msg = req.getData();
         try {
             // handle data.
+            // 调用DubboProtocol的reply
             Object result = handler.reply(channel, msg);
             res.setStatus(Response.OK);
             res.setResult(result);
@@ -161,10 +162,11 @@ public class HeaderExchangeHandler implements ChannelHandlerDelegate {
 
     @Override
     public void received(Channel channel, Object message) throws RemotingException {
-        channel.setAttribute(KEY_READ_TIMESTAMP, System.currentTimeMillis());
+        channel.setAttribute(KEY_READ_TIMESTAMP, System.currentTimeMillis()); // 设置时间戳
         ExchangeChannel exchangeChannel = HeaderExchangeChannel.getOrAddChannel(channel);
         try {
             if (message instanceof Request) {
+                // 服务端处理请求
                 // handle request.
                 Request request = (Request) message;
                 if (request.isEvent()) {
@@ -178,8 +180,10 @@ public class HeaderExchangeHandler implements ChannelHandlerDelegate {
                     }
                 }
             } else if (message instanceof Response) {
+                // 客户端处理响应
                 handleResponse(channel, (Response) message);
             } else if (message instanceof String) {
+                // Telnet调用
                 if (isClientSide(channel)) {
                     Exception e = new Exception("Dubbo client can not supported string message: " + message + " in channel: " + channel + ", url: " + channel.getUrl());
                     logger.error(e.getMessage(), e);
