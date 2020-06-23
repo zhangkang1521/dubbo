@@ -73,7 +73,7 @@ public class MockClusterInvoker<T> implements Invoker<T> {
         if (value.length() == 0 || value.equalsIgnoreCase("false")) {
             //no mock
             result = this.invoker.invoke(invocation);
-        } else if (value.startsWith("force")) {
+        } else if (value.startsWith("force")) { // 不调用服务端，直接Mock
             if (logger.isWarnEnabled()) {
                 logger.info("force-mock: " + invocation.getMethodName() + " force-mock enabled , url : " + directory.getUrl());
             }
@@ -90,6 +90,7 @@ public class MockClusterInvoker<T> implements Invoker<T> {
                     if (logger.isWarnEnabled()) {
                         logger.warn("fail-mock: " + invocation.getMethodName() + " fail-mock enabled , url : " + directory.getUrl(), e);
                     }
+                    // 失败时mock
                     result = doMockInvoke(invocation, e);
                 }
             }
@@ -104,7 +105,7 @@ public class MockClusterInvoker<T> implements Invoker<T> {
 
         List<Invoker<T>> mockInvokers = selectMockInvoker(invocation);
         if (mockInvokers == null || mockInvokers.isEmpty()) {
-            minvoker = (Invoker<T>) new MockInvoker(directory.getUrl());
+            minvoker = (Invoker<T>) new MockInvoker(directory.getUrl()); //
         } else {
             minvoker = mockInvokers.get(0);
         }

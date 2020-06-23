@@ -312,6 +312,7 @@ public class DefaultFuture implements ResponseFuture {
                         if (future == null || future.isDone()) {
                             continue;
                         }
+                        // 定时扫描超时
                         if (System.currentTimeMillis() - future.getStartTimestamp() > future.getTimeout()) {
                             // create exception response.
                             Response timeoutResponse = new Response(future.getId());
