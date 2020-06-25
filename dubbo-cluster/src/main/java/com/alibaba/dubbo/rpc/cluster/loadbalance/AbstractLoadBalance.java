@@ -32,7 +32,7 @@ public abstract class AbstractLoadBalance implements LoadBalance {
 
     static int calculateWarmupWeight(int uptime, int warmup, int weight) {
         int ww = (int) ((float) uptime / ((float) warmup / (float) weight));
-        return ww < 1 ? 1 : (ww > weight ? weight : ww);
+        return ww < 1 ? 1 : (ww > weight ? weight : ww); // 启动时间从 1s~10分钟 权重1/600~100，启动时间长权重越高
     }
 
     @Override
@@ -52,8 +52,10 @@ public abstract class AbstractLoadBalance implements LoadBalance {
             long timestamp = invoker.getUrl().getParameter(Constants.REMOTE_TIMESTAMP_KEY, 0L);
             if (timestamp > 0L) {
                 int uptime = (int) (System.currentTimeMillis() - timestamp);
+                // 默认预热时间为10分钟
                 int warmup = invoker.getUrl().getParameter(Constants.WARMUP_KEY, Constants.DEFAULT_WARMUP);
                 if (uptime > 0 && uptime < warmup) {
+                    // 预热，重新计算权重
                     weight = calculateWarmupWeight(uptime, warmup, weight);
                 }
             }

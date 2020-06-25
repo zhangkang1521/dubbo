@@ -15,7 +15,8 @@
     <!-- 消费端全局配置，会覆盖服务端透传的参数如timeout  -->
     <dubbo:consumer check="false"/>
 
-    <dubbo:reference id="demoService" interface="org.zk.dubbo.api.DemoService" proxy="jdk">
+    <dubbo:reference id="demoService" interface="org.zk.dubbo.api.DemoService" proxy="jdk" loadbalance="consistenthash">
+        <dubbo:parameter key="warmup" value="0"/>
         <!--<dubbo:parameter key="heartbeat" value="3000"/>-->
         <!--<dubbo:parameter key="sayHi.mock" value="return 222"/>-->
     </dubbo:reference>

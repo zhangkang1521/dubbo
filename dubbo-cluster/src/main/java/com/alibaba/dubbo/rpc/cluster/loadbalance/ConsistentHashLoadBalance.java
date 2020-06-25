@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * ConsistentHashLoadBalance
- *
+ * 一致性hash算法负载均衡，避免重新hash引起剧烈抖动
  */
 public class ConsistentHashLoadBalance extends AbstractLoadBalance {
 
@@ -67,6 +67,7 @@ public class ConsistentHashLoadBalance extends AbstractLoadBalance {
             this.virtualInvokers = new TreeMap<Long, Invoker<T>>();
             this.identityHashCode = identityHashCode;
             URL url = invokers.get(0).getUrl();
+            // 每个invoker生成虚拟节点个数，避免1台下线导致邻近的节点压力太大
             this.replicaNumber = url.getMethodParameter(methodName, "hash.nodes", 160);
             String[] index = Constants.COMMA_SPLIT_PATTERN.split(url.getMethodParameter(methodName, "hash.arguments", "0"));
             argumentIndex = new int[index.length];

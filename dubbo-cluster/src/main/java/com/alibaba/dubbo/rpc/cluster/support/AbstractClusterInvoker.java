@@ -112,7 +112,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         if (invokers == null || invokers.isEmpty())
             return null;
         String methodName = invocation == null ? "" : invocation.getMethodName();
-
+        // 默认false
         boolean sticky = invokers.get(0).getUrl().getMethodParameter(methodName, Constants.CLUSTER_STICKY_KEY, Constants.DEFAULT_CLUSTER_STICKY);
         {
             //ignore overloaded method
@@ -142,9 +142,11 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         if (loadbalance == null) {
             loadbalance = ExtensionLoader.getExtensionLoader(LoadBalance.class).getExtension(Constants.DEFAULT_LOADBALANCE);
         }
+        // 负载均衡算法选出
         Invoker<T> invoker = loadbalance.select(invokers, getUrl(), invocation);
 
         //If the `invoker` is in the  `selected` or invoker is unavailable && availablecheck is true, reselect.
+        // selected 以前已经调用过失败的，所以需要重新选择
         if ((selected != null && selected.contains(invoker))
                 || (!invoker.isAvailable() && getUrl() != null && availablecheck)) {
             try {
@@ -155,7 +157,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
                     //Check the index of current selected invoker, if it's not the last one, choose the one at index+1.
                     int index = invokers.indexOf(invoker);
                     try {
-                        //Avoid collision
+                        //Avoid collision 兜底
                         invoker = index < invokers.size() - 1 ? invokers.get(index + 1) : invokers.get(0);
                     } catch (Exception e) {
                         logger.warn(e.getMessage() + " may because invokers list dynamic change, ignore.", e);
@@ -189,7 +191,7 @@ public abstract class AbstractClusterInvoker<T> implements Invoker<T> {
         if (availablecheck) { // invoker.isAvailable() should be checked
             for (Invoker<T> invoker : invokers) {
                 if (invoker.isAvailable()) {
-                    if (selected == null || !selected.contains(invoker)) {
+                    if (selected == null || !selected.contains(invoker)) { // 将invoker排除
                         reselectInvokers.add(invoker);
                     }
                 }

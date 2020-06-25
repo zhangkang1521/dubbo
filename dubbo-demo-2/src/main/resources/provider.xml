@@ -16,7 +16,7 @@
     <!--<dubbo:registry address="N/A"/>-->
 
     <!-- 服务提供者默认配置，会透传到消费端 -->
-    <dubbo:provider timeout="300000" retries="0"/>
+    <dubbo:provider timeout="1000" retries="2"/>
 
     <!-- dubbo协议 -->
     <dubbo:protocol name="dubbo" port="20881"/>
@@ -34,7 +34,7 @@
         <!--<dubbo:parameter key="heartbeat" value="1000"/>-->
     </dubbo:service>
 
-    <dubbo:service interface="org.zk.dubbo.api.Demo2Service" class="org.zk.dubbo.provider.Demo2ServiceImpl"/>
+    <!--<dubbo:service interface="org.zk.dubbo.api.Demo2Service" class="org.zk.dubbo.provider.Demo2ServiceImpl"/>-->
 
     <!--<dubbo:service interface="org.zk.dubbo.api.UserService" class="org.zk.dubbo.provider.UserServiceImpl"/>-->
 </beans>
