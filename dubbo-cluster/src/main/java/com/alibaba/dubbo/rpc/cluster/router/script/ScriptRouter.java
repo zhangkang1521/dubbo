@@ -69,6 +69,7 @@ public class ScriptRouter implements Router {
         }
         ScriptEngine engine = engines.get(type);
         if (engine == null) {
+            // javascript脚本引擎
             engine = new ScriptEngineManager().getEngineByName(type);
             if (engine == null) {
                 throw new IllegalStateException(new IllegalStateException("Unsupported route rule type: " + type + ", rule: " + rule));
@@ -91,10 +92,12 @@ public class ScriptRouter implements Router {
             List<Invoker<T>> invokersCopy = new ArrayList<Invoker<T>>(invokers);
             Compilable compilable = (Compilable) engine;
             Bindings bindings = engine.createBindings();
+            // js中可用的参数
             bindings.put("invokers", invokersCopy);
             bindings.put("invocation", invocation);
             bindings.put("context", RpcContext.getContext());
             CompiledScript function = compilable.compile(rule);
+            // 执行脚本
             Object obj = function.eval(bindings);
             if (obj instanceof Invoker[]) {
                 invokersCopy = Arrays.asList((Invoker<T>[]) obj);

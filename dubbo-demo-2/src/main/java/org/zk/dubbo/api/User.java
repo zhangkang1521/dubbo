@@ -1,6 +1,8 @@
 package org.zk.dubbo.api;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 	private int id;
 	private String username;
 

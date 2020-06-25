@@ -20,7 +20,7 @@ public class DemoServiceImpl implements DemoService {
 //		}
 		String str = RpcContext.getContext().getAttachment("index");
 
-		return "hi," +message;
+		return "hi,local," +message;
 	}
 
 

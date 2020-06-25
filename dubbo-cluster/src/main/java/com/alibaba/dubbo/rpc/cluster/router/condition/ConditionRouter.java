@@ -57,6 +57,7 @@ public class ConditionRouter implements Router, Comparable<Router> {
         this.priority = url.getParameter(Constants.PRIORITY_KEY, 0);
         this.force = url.getParameter(Constants.FORCE_KEY, false);
         try {
+            // 例如 host = 10.43.2.101 => host = 192.168.127.130
             String rule = url.getParameterAndDecoded(Constants.RULE_KEY);
             if (rule == null || rule.trim().length() == 0) {
                 throw new IllegalArgumentException("Illegal route rule!");
@@ -77,6 +78,7 @@ public class ConditionRouter implements Router, Comparable<Router> {
 
     private static Map<String, MatchPair> parseRule(String rule)
             throws ParseException {
+        // 例如： host = 10.43.2.101
         Map<String, MatchPair> condition = new HashMap<String, MatchPair>();
         if (StringUtils.isBlank(rule)) {
             return condition;
@@ -87,8 +89,8 @@ public class ConditionRouter implements Router, Comparable<Router> {
         Set<String> values = null;
         final Matcher matcher = ROUTE_PATTERN.matcher(rule);
         while (matcher.find()) { // Try to match one by one
-            String separator = matcher.group(1);
-            String content = matcher.group(2);
+            String separator = matcher.group(1); // 分隔符
+            String content = matcher.group(2); // 内容
             // Start part of the condition expression.
             if (separator == null || separator.length() == 0) {
                 pair = new MatchPair();

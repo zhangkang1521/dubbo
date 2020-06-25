@@ -16,7 +16,10 @@
     <dubbo:consumer check="false"/>
 
     <dubbo:reference id="demoService" interface="org.zk.dubbo.api.DemoService" proxy="jdk">
-        <dubbo:parameter key="heartbeat" value="3000"/>
+        <!--<dubbo:parameter key="heartbeat" value="3000"/>-->
+        <!--<dubbo:parameter key="sayHi.mock" value="return 222"/>-->
     </dubbo:reference>
+
+    <dubbo:reference id="demo2Service" interface="org.zk.dubbo.api.Demo2Service" proxy="jdk"/>
 
 </beans>
