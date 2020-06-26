@@ -40,7 +40,7 @@ public interface Cluster {
      * @return cluster invoker
      * @throws RpcException
      */
-    @Adaptive
+    @Adaptive // 没有设置查找值，默认使用类名cluster
     <T> Invoker<T> join(Directory<T> directory) throws RpcException;
 
 }

@@ -3,10 +3,12 @@ package org.zk.dubbo.xml;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.zk.dubbo.api.Demo2Service;
 import org.zk.dubbo.api.DemoService;
+import org.zk.dubbo.api.MergerDemoService;
 import org.zk.dubbo.api.User;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class DemoConsumer {
 
@@ -21,6 +23,9 @@ public class DemoConsumer {
 			System.out.println(new Date() + " => " + result);
 			Thread.sleep(1000);
 		}
+//		MergerDemoService mergerDemoService = (MergerDemoService)ctx.getBean("mergerDemoService");
+//		List list = mergerDemoService.getAllMenus();
+//		System.out.println(list);
 	}
 
 

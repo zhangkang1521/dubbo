@@ -122,7 +122,7 @@ public class MergeableClusterInvoker<T> implements Invoker<T> {
             return new RpcResult((Object) null);
         }
 
-        if (merger.startsWith(".")) {
+        if (merger.startsWith(".")) { // 例如配置的是.addAll
             merger = merger.substring(1);
             Method method;
             try {
@@ -151,9 +151,9 @@ public class MergeableClusterInvoker<T> implements Invoker<T> {
             }
         } else {
             Merger resultMerger;
-            if (ConfigUtils.isDefault(merger)) {
+            if (ConfigUtils.isDefault(merger)) { // 配置的是true或false
                 resultMerger = MergerFactory.getMerger(returnType);
-            } else {
+            } else { // 自定义的Merger
                 resultMerger = ExtensionLoader.getExtensionLoader(Merger.class).getExtension(merger);
             }
             if (resultMerger != null) {

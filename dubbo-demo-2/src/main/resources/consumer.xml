@@ -22,5 +22,6 @@
     </dubbo:reference>
 
     <dubbo:reference id="demo2Service" interface="org.zk.dubbo.api.Demo2Service" proxy="jdk"/>
+    <dubbo:reference id="mergerDemoService" interface="org.zk.dubbo.api.MergerDemoService" group="*" merger="true"/>
 
 </beans>

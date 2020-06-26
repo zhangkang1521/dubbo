@@ -37,4 +37,7 @@
     <!--<dubbo:service interface="org.zk.dubbo.api.Demo2Service" class="org.zk.dubbo.provider.Demo2ServiceImpl"/>-->
 
     <!--<dubbo:service interface="org.zk.dubbo.api.UserService" class="org.zk.dubbo.provider.UserServiceImpl"/>-->
+
+    <dubbo:service interface="org.zk.dubbo.api.MergerDemoService" class="org.zk.dubbo.provider.MergerDemoServiceImplGroup1" group="group1"></dubbo:service>
+    <dubbo:service interface="org.zk.dubbo.api.MergerDemoService" class="org.zk.dubbo.provider.MergerDemoServiceImplGroup2" group="group2"></dubbo:service>
 </beans>
