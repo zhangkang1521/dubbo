@@ -36,6 +36,7 @@ public class ConsumerContextFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        // 设置消费端发起调用上下文
         RpcContext.getContext()
                 .setInvoker(invoker)
                 .setInvocation(invocation)

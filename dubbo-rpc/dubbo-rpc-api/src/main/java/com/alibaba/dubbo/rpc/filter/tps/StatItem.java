@@ -41,7 +41,7 @@ class StatItem {
     public boolean isAllowable() {
         long now = System.currentTimeMillis();
         if (now > lastResetTime + interval) {
-            token.set(rate);
+            token.set(rate); // 重置
             lastResetTime = now;
         }
 

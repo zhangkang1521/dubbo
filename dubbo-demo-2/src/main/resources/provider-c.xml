@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <!-- dubbo标签解析类 DubboNamespaceHandler -->
+
+    <!-- 应用信息 ApplicationConfig -->
+    <dubbo:application name="demo-provider-c"/>
+
+    <!-- 注册中心 RegistryConfig -->
+    <dubbo:registry address="zookeeper://localhost:2181"/>
+    <!--<dubbo:registry address="N/A"/>-->
+
+    <!-- 服务提供者默认配置，会透传到消费端 -->
+    <dubbo:provider timeout="300000" retries="0" />
+
+    <!-- dubbo协议 -->
+    <dubbo:protocol name="dubbo" port="20882"/>
+
+    <!-- rest协议 -->
+    <!--<dubbo:protocol name="rest" port="20881"/>-->
+
+    <!-- service implementation, as same as regular local bean -->
+    <!--<bean id="demoService" class="org.zk.dubbo.provider.DemoServiceImpl"/>-->
+
+
+
+    <!-- 服务暴露 ServiceBean -->
+    <dubbo:service interface="org.zk.dubbo.api.UserService" class="org.zk.dubbo.provider.UserServiceImpl"/>
+
+
+</beans>

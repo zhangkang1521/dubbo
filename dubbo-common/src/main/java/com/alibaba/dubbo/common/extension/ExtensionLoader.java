@@ -199,7 +199,7 @@ public class ExtensionLoader<T> {
                     T ext = getExtension(name);
                     if (!names.contains(name)
                             && !names.contains(Constants.REMOVE_VALUE_PREFIX + name)
-                            && isActive(activate, url)) { // 含有参数，参数值不做校验
+                            && isActive(activate, url)) { // 含有参数或参数以.key结尾 而且 值不为空即可
                         exts.add(ext); //
                     }
                 }
@@ -253,7 +253,7 @@ public class ExtensionLoader<T> {
                 String k = entry.getKey();
                 String v = entry.getValue();
                 // 参数中含有@Activate中的value
-                if ((k.equals(key) || k.endsWith("." + key))
+                if ((k.equals(key) || k.endsWith("." + key)) // 例如参数中default.accesslog=true，AccessLogFilter的key为accesslog
                         && ConfigUtils.isNotEmpty(v)) {
                     return true;
                 }
@@ -759,7 +759,7 @@ public class ExtensionLoader<T> {
     private Class<?> createAdaptiveExtensionClass() {
         // 创建代理类代码
         String code = createAdaptiveExtensionClassCode();
-        // logger.info("自动生成" + type.getSimpleName() + "$Adaptive" + "代码：" + code);
+//        logger.info("自动生成" + type.getSimpleName() + "$Adaptive" + "代码：" + code);
         ClassLoader classLoader = findClassLoader();
         // 编译代码
         com.alibaba.dubbo.common.compiler.Compiler compiler = ExtensionLoader.getExtensionLoader(com.alibaba.dubbo.common.compiler.Compiler.class).getAdaptiveExtension();

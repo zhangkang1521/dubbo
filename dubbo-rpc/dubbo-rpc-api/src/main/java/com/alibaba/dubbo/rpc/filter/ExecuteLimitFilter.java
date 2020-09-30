@@ -36,9 +36,10 @@ public class ExecuteLimitFilter implements Filter {
 
     @Override
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        // 服务端并发控制 <dubbo:method name="sayHi" executes="2"></dubbo:method>
         URL url = invoker.getUrl();
         String methodName = invocation.getMethodName();
-        Semaphore executesLimit = null;
+        Semaphore executesLimit = null; // 信号量控制并发数
         boolean acquireResult = false;
         int max = url.getMethodParameter(methodName, Constants.EXECUTES_KEY, 0);
         if (max > 0) {

@@ -45,12 +45,15 @@ public class ProtocolFilterWrapper implements Protocol {
 
     private static <T> Invoker<T> buildInvokerChain(final Invoker<T> invoker, String key, String group) {
         Invoker<T> last = invoker;
-        // 获取activate扩展，客户端默认3个Filter:ConsumerContextFilter,FutureFilter,MonitorFilter
+        // 获取activate扩展
+        // 服务端Filter; 默认8个
+        // 客户端Filter:ConsumerContextFilter,FutureFilter,MonitorFilter
         List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);
         if (!filters.isEmpty()) {
+            // 从尾部开始包装Invoker，例如[A,B,C] 包装后：A->B->C->invoker，执行时先执行A
             for (int i = filters.size() - 1; i >= 0; i--) {
-                final Filter filter = filters.get(i);
-                final Invoker<T> next = last;
+                final Filter filter = filters.get(i); // 当前需要包装的Filter
+                final Invoker<T> next = last; // 上一次包装好的进行下一次包装，第1次为invoker，第二次为C->invoker
                 last = new Invoker<T>() {
 
                     @Override
@@ -98,7 +101,7 @@ public class ProtocolFilterWrapper implements Protocol {
         if (Constants.REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) {
             return protocol.export(invoker);
         }
-        // 包装执行链
+        // 包装服务端执行链
         return protocol.export(buildInvokerChain(invoker, Constants.SERVICE_FILTER_KEY, Constants.PROVIDER));
     }
 
@@ -107,7 +110,7 @@ public class ProtocolFilterWrapper implements Protocol {
         if (Constants.REGISTRY_PROTOCOL.equals(url.getProtocol())) {
             return protocol.refer(type, url);
         }
-        // 执行链
+        // 包装消费端执行链
         return buildInvokerChain(protocol.refer(type, url), Constants.REFERENCE_FILTER_KEY, Constants.CONSUMER);
     }
 

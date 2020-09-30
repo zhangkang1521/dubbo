@@ -11,17 +11,18 @@
 
     <!-- 使用zookeeper做注册中心 -->
     <dubbo:registry address="zookeeper://localhost:2181"/>
+    <!--<dubbo:registry address="N/A"/>-->
 
     <!-- 消费端全局配置，会覆盖服务端透传的参数如timeout  -->
     <dubbo:consumer check="false"/>
 
-    <dubbo:reference id="demoService" interface="org.zk.dubbo.api.DemoService" proxy="jdk" loadbalance="consistenthash">
-        <dubbo:parameter key="warmup" value="0"/>
+    <dubbo:reference id="demoService" interface="org.zk.dubbo.api.DemoService" proxy="jdk">
+        <!--<dubbo:parameter key="warmup" value="0"/>-->
         <!--<dubbo:parameter key="heartbeat" value="3000"/>-->
         <!--<dubbo:parameter key="sayHi.mock" value="return 222"/>-->
+
     </dubbo:reference>
 
-    <dubbo:reference id="demo2Service" interface="org.zk.dubbo.api.Demo2Service" proxy="jdk"/>
-    <dubbo:reference id="mergerDemoService" interface="org.zk.dubbo.api.MergerDemoService" group="*" merger="true"/>
+    <!--<dubbo:reference id="mergerDemoService" interface="org.zk.dubbo.api.MergerDemoService" group="*" merger="true"/>-->
 
 </beans>

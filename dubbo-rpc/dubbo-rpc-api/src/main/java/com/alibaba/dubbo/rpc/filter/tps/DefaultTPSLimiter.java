@@ -33,6 +33,7 @@ public class DefaultTPSLimiter implements TPSLimiter {
         int rate = url.getParameter(Constants.TPS_LIMIT_RATE_KEY, -1);
         long interval = url.getParameter(Constants.TPS_LIMIT_INTERVAL_KEY,
                 Constants.DEFAULT_TPS_LIMIT_INTERVAL);
+        // 限流维度 接口+分组+版本
         String serviceKey = url.getServiceKey();
         if (rate > 0) {
             StatItem statItem = stats.get(serviceKey);

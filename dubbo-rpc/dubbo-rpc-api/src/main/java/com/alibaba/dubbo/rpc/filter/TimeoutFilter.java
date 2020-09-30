@@ -41,6 +41,7 @@ public class TimeoutFilter implements Filter {
         long start = System.currentTimeMillis();
         Result result = invoker.invoke(invocation);
         long elapsed = System.currentTimeMillis() - start;
+        // 记录超时，服务端设置的超时时间
         if (invoker.getUrl() != null
                 && elapsed > invoker.getUrl().getMethodParameter(invocation.getMethodName(),
                 "timeout", Integer.MAX_VALUE)) {

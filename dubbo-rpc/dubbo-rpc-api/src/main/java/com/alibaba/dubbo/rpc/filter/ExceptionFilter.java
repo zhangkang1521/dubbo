@@ -103,6 +103,7 @@ public class ExceptionFilter implements Filter {
                     }
 
                     // otherwise, wrap with RuntimeException and throw back to the client
+                    // 防止客户端反序列化失败
                     return new RpcResult(new RuntimeException(StringUtils.toString(exception)));
                 } catch (Throwable e) {
                     logger.warn("Fail to ExceptionFilter when called by " + RpcContext.getContext().getRemoteHost()
