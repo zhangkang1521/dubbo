@@ -421,6 +421,7 @@ public final class URL implements Serializable {
     public String getParameter(String key) {
         String value = parameters.get(key);
         if (value == null || value.length() == 0) {
+            // <dubbo:provider timeout="300000" retries="0"  filter="myExceptionFilter"/> 这种配置都会加前缀default，例如default.service.filter=myExceptionFilter
             value = parameters.get(Constants.DEFAULT_KEY_PREFIX + key);
         }
         return value;

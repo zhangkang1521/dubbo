@@ -46,7 +46,8 @@ public class ProtocolFilterWrapper implements Protocol {
     private static <T> Invoker<T> buildInvokerChain(final Invoker<T> invoker, String key, String group) {
         Invoker<T> last = invoker;
         // 获取activate扩展
-        // 服务端Filter; 默认8个
+        // 服务端Filter; 默认8个 EchoFilter,ClassLoaderFilter,GenericFilter,ContextFilter,TraceFilter,TimeoutFilter,MonitorFilter,ExceptionFilter
+        // 额外加入key指定的Filter: service.filter -> demoFilter
         // 客户端Filter:ConsumerContextFilter,FutureFilter,MonitorFilter
         List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);
         if (!filters.isEmpty()) {

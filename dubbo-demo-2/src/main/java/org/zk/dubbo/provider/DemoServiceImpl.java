@@ -19,6 +19,8 @@ public class DemoServiceImpl implements DemoService {
 
 	@Override
 	public String sayHi(String message) {
+		RpcContext rpcContext = RpcContext.getContext();
+		System.out.println(rpcContext.getAttachment("application"));
 		logger.info("调用服务,参数" + message);
 //		try {
 //			Thread.sleep(1000);
@@ -28,8 +30,13 @@ public class DemoServiceImpl implements DemoService {
 //		logger.info("开始调用getUser");
 //		User user = userService.getUser(1);
 //		logger.info("调用getUser结束" + user.getId());
-//		throw new BusiException();
-		return "hi,local," + message;
+		throw new RuntimeException("xx");
+//		return "hi,local," + message;
+	}
+
+	@Override
+	public Result testException() {
+		throw new RuntimeException("xx");
 	}
 
 //	public UserService getUserService() {

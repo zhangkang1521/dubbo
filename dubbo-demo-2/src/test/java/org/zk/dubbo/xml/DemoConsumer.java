@@ -9,6 +9,7 @@ import org.zk.dubbo.api.Demo2Service;
 import org.zk.dubbo.api.DemoService;
 import org.zk.dubbo.api.MergerDemoService;
 import org.zk.dubbo.api.User;
+import org.zk.dubbo.provider.Result;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -27,7 +28,7 @@ public class DemoConsumer {
 			final DemoService demoService = (DemoService) ctx.getBean("demoService");
 			// InvokerInvocationHandler
 			logger.info("开始调用sayHi");
-			Object result = demoService.sayHi("ss");
+			Result result = demoService.testException();
 			logger.info("拿到结果" + result);
 //		}
 //		MergerDemoService mergerDemoService = (MergerDemoService)ctx.getBean("mergerDemoService");

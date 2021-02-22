@@ -1,1 +1,2 @@
 tps=com.alibaba.dubbo.rpc.filter.TpsLimitFilter
+myExceptionFilter=org.zk.dubbo.filter.MyExceptionFilter

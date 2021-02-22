@@ -90,7 +90,7 @@ public class ExceptionFilter implements Filter {
                     String serviceFile = ReflectUtils.getCodeBase(invoker.getInterface());
                     String exceptionFile = ReflectUtils.getCodeBase(exception.getClass());
                     if (serviceFile == null || exceptionFile == null || serviceFile.equals(exceptionFile)) {
-                        return result;
+                        return result; // 直接抛出异常
                     }
                     // directly throw if it's JDK exception
                     String className = exception.getClass().getName();
